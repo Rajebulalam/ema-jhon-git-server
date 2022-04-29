@@ -17,9 +17,16 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     await client.connect();
     const userCollection = client.db("Shop").collection("Product");
+    const orderCollection = client.db("Shop").collection("Order");
 
     try {
-
+        // Data Received from Client Site and Send to The Server Site
+        app.post('/orders', async (req, res) => {
+            const booking = req.body;
+            const result = await orderCollection.insertOne(booking);
+            res.send(result);
+            console.log('Data Send from Server to Database');
+        })
     } finally {
         // await client.close();
     }
